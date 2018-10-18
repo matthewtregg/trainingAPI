@@ -18,8 +18,8 @@ app.post('/todos', (req, res) => {
 	});
 
 	todo.save().then((doc) => {
-		res.send(doc);
-	}, (e) => {
+	res.send(doc)
+	}).catch((e) => {
 		res.status(400).send(e);
 	});
 
@@ -28,8 +28,8 @@ app.post('/todos', (req, res) => {
 app.get('/todos', (req,res)=>{
 
 	Todo.find().then((todos) =>{
-		res.send({todos})
-	}, (e) => {
+	res.send({todos})
+	}).catch((e) => {
 		res.status(400).send(e);
 	})
 
@@ -49,10 +49,10 @@ app.get('/todos/:id', (req,res)=>{
 	Todo.findById(id).then((todo) => {
 	 	if(!todo){
 	 	res.status(404).send('')
-		} else {
-       	res.send({todo});
-		}
-		}, (e) => {	
+		} 
+       	
+       	res.send({todo})
+		}).catch((e) => {	
 		
 		res.status(400).send(e);
 		
@@ -62,6 +62,33 @@ app.get('/todos/:id', (req,res)=>{
 		
 	
 
+
+app.delete('/todos/:id', (req,res) =>{
+	var id = req.params.id;
+
+	//validate the id ->not valid? return 404
+	if (!ObjectID.isValid(id)){
+	 	res.status(404).send('');
+	}
+
+	Todo.findByIdAndRemove(id).then((todo) => {
+	 	if(!todo){
+	 	res.status(404).send('')
+		} 
+       	res.send({todo})
+		}).catch((e) => {	
+		res.status(400).send(e);
+		
+	})
+
+	// remove todo by id
+		// success
+			// if no doc send 404
+			// if doc send 404
+		// error
+			//400 with empty body
+
+});
 // 	// findByID
 // 		//success
 // 			// if todo send it bacl
