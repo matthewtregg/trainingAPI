@@ -188,6 +188,23 @@ app.delete('/todos/:id', (req,res) =>{
 // 		// error
 // 			// 400 - send empty body back
 
+app.delete('/users/me/token',authenticate, (req,res) =>{
+
+	req.user.removeToken(req.token).then(() =>{
+		res.status(200).send()
+	},() => {
+		res.status(400).send()
+	})
+
+});
+
+
+
+
+
+
+
+
 
 
 
